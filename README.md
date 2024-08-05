@@ -68,12 +68,32 @@ This repo demonstrates the creation of DockerFile and how to containerize a simp
 - Example: `docker push rajneesh69/docker-demo-image:latest`
 
 ## Layers in Docker
-- Every FROM, WORKDIR, COPY, RUN command adds a layer to the docker container and this is what helps docker to cache some files already if the build command is run multiple times eventually saving the time.
+- Every FROM, WORKDIR, COPY, RUN etc. command adds a layer to the docker container and this is what helps docker to cache some files already if the build command is run multiple times which eventually saves the time.
 
-- To optimise the docker containers we need to have an understanding of these layers so that we can efficiently manage and optimize docker containers.
+- To optimize the docker containers we need to have an understanding of these layers so that we can efficiently manage and optimize docker containers.
 
-- If base image is same then the layers could be used across images.
+- If the base image is same then the layers could be shared across images.
 
 - If a layer is cached then everything before it is cached and if a layer is uncached then after it everything is uncached.
 
+- Made a change in index.ts to uncache the COPY layer which led to the following layers become go uncached.
 ![Docker Caching](docker-caching.png)
+
+- We want as much as layers to be cached, so that if another docker build is run(even for some other project, as layers could be shared across), then the time could be saved. 
+
+  
+  (Q) Since, dependencies don't change very often, why not try to cache them?
+  
+  One of the ways to do it is by incrementally copying the files instead of all at once.
+
+  So, `instead of COPY . .`, we can do the following:
+  
+  1. COPY package* .
+  2. COPY ./prisma .
+  3. RUN npm install
+  4. RUN npx prisma migrate
+  5. COPY . .
+
+        ... rest of the file
+
+- More layers don't mean more computation.
