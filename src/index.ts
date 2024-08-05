@@ -1,4 +1,3 @@
-
 import { PrismaClient } from "@prisma/client";
 import express from "express";
 
@@ -6,6 +5,8 @@ const app = express();
 app.use(express.json());
 
 const client = new PrismaClient();
+
+console.log("make a dummy change to make the COPY and the following commands uncached.")
 
 app.get("/", (req, res) => {
     res.json({

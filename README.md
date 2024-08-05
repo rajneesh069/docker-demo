@@ -14,7 +14,7 @@ This repo demonstrates the creation of DockerFile and how to containerize a simp
 
 #### RUN
 
-- To bootstrap the image, the commands we need to run are run by the RUN command.
+- To bootstrap the image,i.e., while building the image the commands we need to run.
 - Syntax : `RUN npm install`
 
 #### CMD
@@ -48,7 +48,7 @@ This repo demonstrates the creation of DockerFile and how to containerize a simp
 ![Docker Build ScreenShot](image.png)
 ![Docker Images Screenshot](docker-image-ss.png)
 
-### Environment varibales in Docker
+### Environment variables in Docker
 
 - Using the ENV command(`ENV ENVIRONMENT_VARIABLE_NAME="VALUE"`) one can hard code it in the Dockerfile, but the downsides are that the unwanted secrets would be exposed.
 
@@ -58,6 +58,7 @@ This repo demonstrates the creation of DockerFile and how to containerize a simp
 
 - To get full access of the container run the following command:
   `docker exec -it <container-name-or-id> /path/to/directory`
+  Example:
   `docker exec -it <container-name-or-id> /bin/bash`
 
 ### Pushing to dockerhub
@@ -65,3 +66,14 @@ This repo demonstrates the creation of DockerFile and how to containerize a simp
 - Signin/ Signup on docker hub.
 - Create a repo and then use the following command : `docker push <image-name>:<tagname>`
 - Example: `docker push rajneesh69/docker-demo-image:latest`
+
+## Layers in Docker
+- Every FROM, WORKDIR, COPY, RUN command adds a layer to the docker container and this is what helps docker to cache some files already if the build command is run multiple times eventually saving the time.
+
+- To optimise the docker containers we need to have an understanding of these layers so that we can efficiently manage and optimize docker containers.
+
+- If base image is same then the layers could be used across images.
+
+- If a layer is cached then everything before it is cached and if a layer is uncached then after it everything is uncached.
+
+![Docker Caching](docker-caching.png)
