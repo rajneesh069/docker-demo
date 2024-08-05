@@ -26,7 +26,7 @@ This repo demonstrates the creation of DockerFile and how to containerize a simp
 
 ### .dockerignore
 
-- Similar to `.gitignore`, we put the files/folders which we don't want to be uploaded on docker hub.
+- Similar to `.gitignore`, we put the files/folders which we want to be ignored while building an image.
 
 ### Building the final image
 
@@ -35,3 +35,9 @@ This repo demonstrates the creation of DockerFile and how to containerize a simp
 - It builds the image with the name and this is the image which would be eventually the docker image would be pushed with.
 
 ![Docker Build ScreenShot](image.png)
+![Docker Images Screenshot](docker-image-ss.png)
+
+### Environment varibales in Docker
+- Using the ENV command(`ENV ENVIRONMENT_VARIABLE_NAME="VALUE"`) one can hard code it in the Dockerfile, but the downsides are that the unwanted secrets would be exposed.
+
+- Instead, we inject the environment variables when we actually run the image using `docker run -p 27017:27017 -e DATABASE_URL="db_url" username="some_user" <image-name>`
