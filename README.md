@@ -2,18 +2,28 @@
 
 This repo demonstrates the creation of DockerFile and how to containerize a simple node.js app.
 
-## RUN vs CMD
+## Basic Docker commands
 
-### RUN
+- `docker images` : displays all the images on a machine
+- `docker ps` : displays all the running containers along with all their info
+- `docker run -p 27017:27017 -e SOME_ENV_VAR="VALUE" OTHER_ENV_VAR="VALUE2" <image-name>` : runs the image with the specified image name and with the mapped port by using the `-p` flag along with the injected environment variables with the help of `-e` flag.
+- `docker kill <CONTAINER_ID>` : kills the container with the specified ID
+- `docker rmi <image-name> --force` : deletes the image from the machine forcibly
+
+### RUN vs CMD
+
+#### RUN
 
 - To bootstrap the image, the commands we need to run are run by the RUN command.
 - Syntax : `RUN npm install`
 
-### CMD
+#### CMD
 
 - In order to actually start the containerized application, we use CMD command.
 - Syntax : `CMD["node", "dist/index.js"] to run node dist/index.js`
+
 ---
+
 ### WORKDIR
 
 - Tells the working directory in which the app's dependencies would be installed and it would be run. Syntax : `WORKDIR <directory-name>`
@@ -30,6 +40,7 @@ This repo demonstrates the creation of DockerFile and how to containerize a simp
 
 ### Building the final image
 
+- If you want to push the image on docker hub, make sure the name of the image and the repository name on docker hub is same.
 - Command : `docker build -t <image-name> .`, the dot in the end is the path to tell where the image needs to be built from and could be replaced as per needs.
   Example : `docker build -t rajneesh-docker-demo-image /d/docker-demo` -> give the full path.
 - It builds the image with the name and this is the image which would be eventually the docker image would be pushed with.
@@ -38,6 +49,19 @@ This repo demonstrates the creation of DockerFile and how to containerize a simp
 ![Docker Images Screenshot](docker-image-ss.png)
 
 ### Environment varibales in Docker
+
 - Using the ENV command(`ENV ENVIRONMENT_VARIABLE_NAME="VALUE"`) one can hard code it in the Dockerfile, but the downsides are that the unwanted secrets would be exposed.
 
 - Instead, we inject the environment variables when we actually run the image using `docker run -p 27017:27017 -e DATABASE_URL="db_url" username="some_user" <image-name>`
+
+### Docker in interactive mode
+
+- To get full access of the container run the following command:
+  `docker exec -it <container-name-or-id> /path/to/directory`
+  `docker exec -it <container-name-or-id> /bin/bash`
+
+### Pushing to dockerhub
+
+- Signin/ Signup on docker hub.
+- Create a repo and then use the following command : `docker push <image-name>:<tagname>`
+- Example: `docker push rajneesh69/docker-demo-image:latest`
